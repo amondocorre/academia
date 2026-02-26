@@ -1,7 +1,7 @@
 DirectoryIndex index.php
 
 # Descomenta la siguiente línea en tu hosting de producción
-# SetEnv CI_ENV production
+ SetEnv CI_ENV production
 
 RewriteEngine On
 
