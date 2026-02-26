@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |--------------------------------------------------------------------------
 | Base Site URL
 |--------------------------------------------------------------------------
+*/
 $config['base_url'] = ENVIRONMENT === 'production' 
     ? 'https://www.vanguardsolutionsbolivia.com/academia/backend/' 
     : 'http://localhost/academia/backend/';
