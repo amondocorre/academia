@@ -62,7 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	// Cambia a 'production' manualmente en el servidor real:
+	define('ENVIRONMENT', 'production');
 
 /*
  *---------------------------------------------------------------
