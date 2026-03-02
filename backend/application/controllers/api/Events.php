@@ -62,11 +62,21 @@ class Events extends Api_base
     {
         $payload = $this->require_auth();
 
-        // Leemos de $_POST dado que puede ser form-data
-        $titulo = strip_tags(trim($this->input->post('titulo') ?? ''));
-        $fecha  = $this->input->post('fecha') ?? '';
-        $tipo   = $this->input->post('tipo') ?? '';
-        $descripcion = strip_tags($this->input->post('descripcion') ?? '');
+        // Leemos de $_POST dado que puede ser form-data, o del payload JSON
+        $is_multipart = !empty($_POST) || !empty($_FILES);
+
+        if ($is_multipart) {
+            $titulo = strip_tags(trim($this->input->post('titulo') ?? ''));
+            $fecha  = $this->input->post('fecha') ?? '';
+            $tipo   = $this->input->post('tipo') ?? '';
+            $descripcion = strip_tags($this->input->post('descripcion') ?? '');
+        } else {
+            $body = $this->json_body();
+            $titulo = strip_tags(trim($body['titulo'] ?? ''));
+            $fecha  = $body['fecha'] ?? '';
+            $tipo   = $body['tipo'] ?? '';
+            $descripcion = strip_tags($body['descripcion'] ?? '');
+        }
 
         if (empty($titulo) || empty($fecha) || !in_array($tipo, ['examen', 'exposicion'])) {
             $this->json_error('Faltan campos requeridos: titulo, fecha, tipo', 422);

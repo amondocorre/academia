@@ -17,9 +17,10 @@ class Api_base extends CI_Controller
         parent::__construct();
         $this->load->helper(['jwt', 'url']);
 
-        // Habilitar CORS para el frontend de Vite
+        // Habilitar CORS dinámico basado en el origen de la petición
+        $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '*';
         $this->output
-            ->set_header('Access-Control-Allow-Origin: http://localhost:5173')
+            ->set_header('Access-Control-Allow-Origin: ' . $origin)
             ->set_header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS')
             ->set_header('Access-Control-Allow-Headers: Content-Type, Authorization')
             ->set_header('Access-Control-Allow-Credentials: true')
