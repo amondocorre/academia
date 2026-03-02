@@ -94,4 +94,44 @@ class Auth extends Api_base
     {
         $this->json_ok([], 'Sesión cerrada');
     }
+
+    /** Actualizar foto de perfil del usuario logueado */
+    public function update_photo(): void
+    {
+        $payload = $this->require_auth();
+        $user_id = $payload['sub'];
+
+        if (empty($_FILES['foto']['name'])) {
+            $this->json_error('No se envió ninguna foto', 422);
+        }
+
+        $upload_path = FCPATH . 'uploads/perfiles/';
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0755, true);
+        }
+
+        $config['upload_path']   = $upload_path;
+        $config['allowed_types'] = '*';
+        $config['max_size']      = 5120; // 5MB
+        $config['encrypt_name']  = TRUE;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('foto')) {
+            $this->json_error($this->upload->display_errors('', ''), 422);
+        }
+
+        $data = $this->upload->data();
+        $ruta_foto = 'uploads/perfiles/' . $data['file_name'];
+
+        // Obtener usuario actual para borrar foto anterior
+        $usuario = $this->User_model->find($user_id);
+        if ($usuario && !empty($usuario->foto_perfil) && file_exists(FCPATH . $usuario->foto_perfil)) {
+            @unlink(FCPATH . $usuario->foto_perfil);
+        }
+
+        $this->User_model->update_user($user_id, ['foto_perfil' => $ruta_foto]);
+
+        $this->json_ok(['foto_perfil' => base_url($ruta_foto)], 'Foto actualizada');
+    }
 }

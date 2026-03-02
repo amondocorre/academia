@@ -24,6 +24,9 @@ class Api_base extends CI_Controller
             ->set_header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS')
             ->set_header('Access-Control-Allow-Headers: Content-Type, Authorization')
             ->set_header('Access-Control-Allow-Credentials: true')
+            ->set_header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0')
+            ->set_header('Cache-Control: post-check=0, pre-check=0', false)
+            ->set_header('Pragma: no-cache')
             ->set_header('Content-Type: application/json; charset=utf-8');
 
         // Preflight OPTIONS → responder vacío

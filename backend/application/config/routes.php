@@ -14,6 +14,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['api/auth/login']['POST']  = 'api/Auth/login';
 $route['api/auth/logout']['POST'] = 'api/Auth/logout';
 $route['api/auth/me']['GET']      = 'api/Auth/me';
+$route['api/auth/update_photo']['POST'] = 'api/Auth/update_photo';
 
 // --- Horarios ---
 $route['api/schedule']['GET']            = 'api/Schedule/index';
