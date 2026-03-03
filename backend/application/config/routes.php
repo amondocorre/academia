@@ -58,4 +58,5 @@ $route['api/events/padre']['GET']       = 'api/Events/padre';
 $route['api/events/estado/(:num)']['PUT'] = 'api/Events/cambiar_estado/$1';
 $route['api/events']['GET']             = 'api/Events/index';
 $route['api/events']['POST']            = 'api/Events/create';
+$route['api/events/(:num)']['PUT']      = 'api/Events/update/$1';
 $route['api/events/(:num)']['DELETE']   = 'api/Events/destroy/$1';

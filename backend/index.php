@@ -8,6 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+// Configurar zona horaria de Bolivia
+date_default_timezone_set('America/La_Paz');
+
 /**
  * CodeIgniter
  *
@@ -64,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
  */
 	// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 	// Cambia a 'production' manualmente en el servidor real:
-	define('ENVIRONMENT', 'production');
+	define('ENVIRONMENT', 'development');
 
 /*
  *---------------------------------------------------------------

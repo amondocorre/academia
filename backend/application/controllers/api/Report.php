@@ -81,12 +81,26 @@ class Report extends Api_base
             $completadas = (int) $datos['completadas'];
             $porcentaje  = $total > 0 ? round(($completadas / $total) * 100) : 0;
 
+            $horario = [];
+            if ($fecha_inicio === $fecha_fin) {
+                $dia_semana = date('w', strtotime($fecha_inicio));
+                $this->db->select('h.id, h.usuario_id, h.materia_id, h.dia_semana, h.hora_inicio, h.hora_fin, m.nombre as materia_nombre, m.color_hex');
+                $this->db->from('horarios h');
+                $this->db->join('materias m', 'm.id = h.materia_id');
+                $this->db->where('h.usuario_id', $hijo['id']);
+                $this->db->where('h.dia_semana', $dia_semana);
+                $this->db->where('h.activo', 1);
+                $this->db->order_by('h.hora_inicio', 'ASC');
+                $horario = $this->db->get()->result_array();
+            }
+
             $reportes[$hijo['id']] = [
                 'completadas' => $completadas,
                 'total'       => $total,
                 'porcentaje'  => $porcentaje,
                 'registros'   => $datos['registros'],
                 'eventos'     => $datos['eventos'],
+                'horario'     => $horario,
             ];
         }
 

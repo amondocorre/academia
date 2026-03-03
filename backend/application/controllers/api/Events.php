@@ -78,7 +78,7 @@ class Events extends Api_base
             $descripcion = strip_tags($body['descripcion'] ?? '');
         }
 
-        if (empty($titulo) || empty($fecha) || !in_array($tipo, ['examen', 'exposicion'])) {
+        if (empty($titulo) || empty($fecha) || !in_array($tipo, ['examen', 'exposicion', 'tarea', 'otros'])) {
             $this->json_error('Faltan campos requeridos: titulo, fecha, tipo', 422);
         }
 
@@ -119,6 +119,36 @@ class Events extends Api_base
         $this->db->where('id', $id)->delete('calendario_eventos');
         $this->json_ok([], 'Evento eliminado');
     }
+
+    /** PUT /api/events/:id → Actualizar evento (solo padre) */
+    public function update(int $id): void
+    {
+        $payload = $this->require_auth();
+        $this->require_rol('padre');
+        $padre_id = $payload['sub'];
+
+        $json = json_decode(file_get_contents('php://input'), true);
+        
+        // Verificar que el evento pertenece a uno de los hijos del padre
+        $this->load->model('User_model');
+        $hijos = $this->User_model->get_hijos($padre_id);
+        $hijos_ids = array_column($hijos, 'id');
+
+        $evento = $this->db->where('id', $id)->get('calendario_eventos')->row();
+        if (!$evento) $this->json_error('Evento no encontrado', 404);
+        if (!in_array($evento->usuario_id, $hijos_ids)) $this->json_error('No autorizado', 403);
+
+        $update_data = [];
+        if (isset($json['fecha'])) $update_data['fecha'] = $json['fecha'];
+        if (isset($json['descripcion'])) $update_data['descripcion'] = $json['descripcion'];
+
+        if (!empty($update_data)) {
+            $this->db->where('id', $id)->update('calendario_eventos', $update_data);
+        }
+
+        $this->json_ok([], 'Evento actualizado');
+    }
+
 
     /**
      * Sube archivo y devuelve path relativo
