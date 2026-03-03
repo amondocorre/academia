@@ -67,7 +67,7 @@ date_default_timezone_set('America/La_Paz');
  */
 	// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 	// Cambia a 'production' manualmente en el servidor real:
-	define('ENVIRONMENT', 'development');
+	define('ENVIRONMENT', 'production');
 
 /*
  *---------------------------------------------------------------
