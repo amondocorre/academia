@@ -48,7 +48,7 @@ class Report_model extends CI_Model
 
         // Registros recientes con detalle (para mostrar en la tarjeta)
         $registros = $this->db
-            ->select('rd.id, rd.fecha, rd.completado, rd.no_hubo_tarea, rd.profesor_falto,
+            ->select('rd.id, rd.materia_id, rd.fecha, rd.completado, rd.no_hubo_tarea, rd.profesor_falto,
                       rd.avance_texto, rd.tarea_descripcion,
                       m.nombre AS materia_nombre, m.color_hex')
             ->from('registros_diarios rd')
